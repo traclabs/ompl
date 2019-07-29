@@ -551,7 +551,7 @@ bool ompl::tools::Thunder::doPostProcessing()
     return true;
 }
 
-void ompl::tools::Thunder::addCriticalPoints(std::vector<std::vector<double>> points)
+void ompl::tools::Thunder::addCriticalPoints(std::vector<std::shared_ptr<ompl::base::State>> points)
 {
     critical_points_ = points;
 }

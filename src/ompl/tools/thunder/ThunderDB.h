@@ -158,7 +158,7 @@ namespace ompl
             }
 
             /** \brief Add critical points in the experience Database */ 
-            bool addCriticalPoints(std::vector<std::vector<double>> points);
+            bool addCriticalPoints(std::vector<std::shared_ptr<ompl::base::State>> points);
 
         protected:
 

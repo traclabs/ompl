@@ -182,7 +182,7 @@ namespace ompl
             bool doPostProcessing();
 
             /** \brief Add critical points in the experience Database */ 
-            void addCriticalPoints(std::vector<std::vector<double>> points);
+            void addCriticalPoints(std::vector<std::shared_ptr<ompl::base::State>> points);
 
 
         protected:
@@ -205,7 +205,7 @@ namespace ompl
             /** \brief Accumulated experiences to be later added to experience database */
             std::vector<ompl::geometric::PathGeometric>  queuedSolutionPaths_;
 
-            std::vector<std::vector<double>> critical_points_;
+            std::vector<std::shared_ptr<ompl::base::State>> critical_points_;
            
         }; // end of class Thunder
 
