@@ -69,10 +69,11 @@ void ompl::tools::Thunder::initialize()
     // Load the experience database
     experienceDB_.reset(new ompl::tools::ThunderDB(si_->getStateSpace()));
 
+
     // Load the Retrieve repair database. We do it here so that setRepairPlanner() works
     rrPlanner_ = ob::PlannerPtr(new og::ThunderRetrieveRepair(si_, experienceDB_));
 
-    OMPL_INFORM("Thunder Framework initialized.");
+    OMPL_INFORM("Thunder Framework initialized");
 }
 
 void ompl::tools::Thunder::setup(void)
@@ -165,6 +166,15 @@ void ompl::tools::Thunder::setup(void)
             experienceDB_->getSPARSdb()->printDebug();
 
             experienceDB_->load(filePath_); // load from file
+            if (critical_points_.size()>0)
+            {
+                auto result = experienceDB_->addCriticalPoints(critical_points_);
+                if (result)
+                    OMPL_INFORM("Succesfully added %d critical points in FILLOUT seconds",
+                            critical_points_.size());
+                 else
+                    OMPL_ERROR("Failed to add %d critical points ", critical_points_.size());
+            }
         }
 
         // Set the configured flag
@@ -539,4 +549,9 @@ bool ompl::tools::Thunder::doPostProcessing()
     queuedSolutionPaths_.clear();
 
     return true;
+}
+
+void ompl::tools::Thunder::addCriticalPoints(std::vector<std::vector<double>> points)
+{
+    critical_points_ = points;
 }

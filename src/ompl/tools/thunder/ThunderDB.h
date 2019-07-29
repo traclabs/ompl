@@ -157,6 +157,9 @@ namespace ompl
                 return !spars_->getNumVertices();
             }
 
+            /** \brief Add critical points in the experience Database */ 
+            bool addCriticalPoints(std::vector<std::vector<double>> points);
+
         protected:
 
             /// The created space information

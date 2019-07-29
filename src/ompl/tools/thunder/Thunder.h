@@ -181,6 +181,10 @@ namespace ompl
             /** \brief Allow accumlated experiences to be processed */
             bool doPostProcessing();
 
+            /** \brief Add critical points in the experience Database */ 
+            void addCriticalPoints(std::vector<std::vector<double>> points);
+
+
         protected:
 
             /**  The maintained experience planner instance */
@@ -201,6 +205,8 @@ namespace ompl
             /** \brief Accumulated experiences to be later added to experience database */
             std::vector<ompl::geometric::PathGeometric>  queuedSolutionPaths_;
 
+            std::vector<std::vector<double>> critical_points_;
+           
         }; // end of class Thunder
 
     } // end of namespace

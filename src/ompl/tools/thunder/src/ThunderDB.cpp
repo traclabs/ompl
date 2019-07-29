@@ -304,3 +304,9 @@ void ompl::tools::ThunderDB::debugState(const ompl::base::State* state)
     si_->printState(state, std::cout);
 }
 
+bool ompl::tools::ThunderDB::addCriticalPoints(std::vector<std::vector<double>> points)
+{
+    OMPL_ERROR("NOT IMPLEMENTED YET, NUMBER OF POINTS GIVEN %d", points.size());
+    OMPL_ERROR("NOT IMPLEMENTED YET, DIMENTION OF POINTS GIVEN %d", points[0].size());
+    return false;
+}

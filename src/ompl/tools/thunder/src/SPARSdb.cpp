@@ -520,7 +520,7 @@ bool ompl::geometric::SPARSdb::lazyCollisionCheck(std::vector<Vertex> &vertexPat
             if (!si_->checkMotion(stateProperty_[fromVertex], stateProperty_[toVertex]))
             {
                 // Path between (from, to) states not valid, disable the edge
-                OMPL_INFORM("  DISABLING EDGE from vertex %f to vertex %f", fromVertex, toVertex);
+                OMPL_INFORM("  DISABLING EDGE from vertex %lu to vertex %lu", fromVertex, toVertex);
 
                 // Disable edge
                 edgeCollisionStateProperty_[thisEdge] = IN_COLLISION;
