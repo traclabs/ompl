@@ -60,7 +60,7 @@ void ompl::tools::Thunder::initialize()
     OMPL_INFORM("Initializing Thunder Framework");
 
     recallEnabled_ = true;
-    scratchEnabled_ = true;
+    scratchEnabled_ = false;//TODO:Revert back to original behavior to create the Database
     filePath_ = "unloaded";
 
     // How many threads to plan with scratch (1 or 2)
@@ -287,7 +287,7 @@ ompl::base::PlannerStatus ompl::tools::Thunder::solve(const base::PlannerTermina
         OMPL_INFORM("Thunder Solve: Possible solution found in %f seconds", planTime_);
 
         // Smooth the result
-        simplifySolution(ptc);
+        //simplifySolution(ptc);
 
         og::PathGeometric solutionPath = getSolutionPath(); // copied so that it is non-const
         OMPL_INFORM("Solution path has %d states and was generated from planner %s", solutionPath.getStateCount(), getSolutionPlannerName().c_str());

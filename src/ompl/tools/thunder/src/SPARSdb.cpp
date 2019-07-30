@@ -44,6 +44,7 @@
 #include <boost/graph/incremental_components.hpp>
 #include <boost/property_map/vector_property_map.hpp>
 #include <boost/foreach.hpp>
+#include <ompl/datastructures/NearestNeighborsGNAT.h>
 
 // Allow hooks for visualizing planner
 //#define OMPL_THUNDER_DEBUG
@@ -143,7 +144,7 @@ void ompl::geometric::SPARSdb::setup()
 {
     Planner::setup();
     if (!nn_)
-        nn_.reset(tools::SelfConfig::getDefaultNearestNeighbors<Vertex>(this));
+        nn_.reset(new ompl::NearestNeighborsGNAT<Vertex>());
     nn_->setDistanceFunction(std::bind(&SPARSdb::distanceFunction, this, std::placeholders::_1, std::placeholders::_2));
     double maxExt = si_->getMaximumExtent();
     sparseDelta_ = sparseDeltaFraction_ * maxExt;
@@ -1344,8 +1345,10 @@ bool ompl::geometric::SPARSdb::findGraphNeighbors(const base::State *state, std:
 int ompl::geometric::SPARSdb::approachGraph(Vertex v)
 {
   std::vector<Vertex> hold;
-  nn_->nearestK(v,si_->getStateDimension() , hold);//HACK get as many neighbors as the state's dimention.
+  //nn_->nearestK(v,si_->getStateDimension() , hold);//HACK get as many neighbors as the state's dimention.
 
+
+  nn_->nearestK(v,8 , hold);//HACK get as many neighbors as the state's dimention.
   //Number of succesfull additions. 
   int n = 0;
   for (std::size_t i = 0; i < hold.size(); ++i)
