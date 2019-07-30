@@ -69,7 +69,6 @@ void ompl::tools::Thunder::initialize()
     // Load the experience database
     experienceDB_.reset(new ompl::tools::ThunderDB(si_->getStateSpace()));
 
-
     // Load the Retrieve repair database. We do it here so that setRepairPlanner() works
     rrPlanner_ = ob::PlannerPtr(new og::ThunderRetrieveRepair(si_, experienceDB_));
 
@@ -551,7 +550,7 @@ bool ompl::tools::Thunder::doPostProcessing()
     return true;
 }
 
-void ompl::tools::Thunder::addCriticalPoints(std::vector<std::shared_ptr<ompl::base::State>> points)
+void ompl::tools::Thunder::addCriticalPoints(const std::vector<std::shared_ptr<ompl::base::State>> &points)
 {
     critical_points_ = points;
 }

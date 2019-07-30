@@ -182,7 +182,7 @@ namespace ompl
             bool doPostProcessing();
 
             /** \brief Add critical points in the experience Database */ 
-            void addCriticalPoints(std::vector<std::shared_ptr<ompl::base::State>> points);
+            void addCriticalPoints(const std::vector<std::shared_ptr<ompl::base::State>> &points);
 
 
         protected:
