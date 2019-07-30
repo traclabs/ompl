@@ -468,7 +468,7 @@ namespace ompl
 
 
             /** \brief Function that adds a State to the Roadmap without enforcing the SPARS requirments */
-            bool addStateToRoadmapForce(base::State *newState);
+            int addStateToRoadmapForce(base::State *newState);
 
             /** \brief Function that adds a State to the Roadmap by enforcing the SPARS requirments */
 

@@ -938,7 +938,7 @@ bool ompl::geometric::SPARSdb::checkStartGoalConnection(ompl::geometric::PathGeo
     return !error; // return true if it inserted correctly
 }
 
-bool ompl::geometric::SPARSdb::addStateToRoadmapForce(base::State *newState)
+int ompl::geometric::SPARSdb::addStateToRoadmapForce(base::State *newState)
 {
     //create  the new vertex
     base::State *qNew = si_->cloneState(newState);
@@ -946,9 +946,9 @@ bool ompl::geometric::SPARSdb::addStateToRoadmapForce(base::State *newState)
     stateProperty_[m] = qNew;
 
     auto n  =  approachGraph(m);
-    OMPL_INFORM("%d new neighbors were added to the graph!");
+    OMPL_INFORM("%d new neighbors were added to the graph!", n);
 
-    return n> 0;
+    return n;
 
 }
 bool ompl::geometric::SPARSdb::addStateToRoadmap(const base::PlannerTerminationCondition &ptc, base::State *newState)

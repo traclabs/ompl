@@ -308,7 +308,8 @@ int ompl::tools::ThunderDB::addCriticalPoints(std::vector<std::shared_ptr<ompl::
 {
     int n = 0; 
     for (const auto & crit:points)
-        n = spars_->addStateToRoadmapForce(crit.get());
+        if (spars_->addStateToRoadmapForce(crit.get()))
+            n++;
 
     return n;
 }
