@@ -304,8 +304,11 @@ void ompl::tools::ThunderDB::debugState(const ompl::base::State* state)
     si_->printState(state, std::cout);
 }
 
-bool ompl::tools::ThunderDB::addCriticalPoints(std::vector<std::shared_ptr<ompl::base::State>> points)
+int ompl::tools::ThunderDB::addCriticalPoints(std::vector<std::shared_ptr<ompl::base::State>> points)
 {
-    OMPL_ERROR("NOT IMPLEMENTED YET, NUMBER OF POINTS GIVEN %d", points.size());
-    return false;
+    int n = 0; 
+    for (const auto & crit:points)
+        n = spars_->addStateToRoadmapForce(crit.get());
+
+    return n;
 }

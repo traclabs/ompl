@@ -466,6 +466,12 @@ namespace ompl
 
             bool checkStartGoalConnection(ompl::geometric::PathGeometric& solutionPath);
 
+
+            /** \brief Function that adds a State to the Roadmap without enforcing the SPARS requirments */
+            bool addStateToRoadmapForce(base::State *newState);
+
+            /** \brief Function that adds a State to the Roadmap by enforcing the SPARS requirments */
+
             bool addStateToRoadmap(const base::PlannerTerminationCondition &ptc, base::State *newState);
 
             /** \brief Function that can solve the motion planning
@@ -631,7 +637,7 @@ namespace ompl
             bool findGraphNeighbors(const base::State *state, std::vector<Vertex> &graphNeighborhood);
 
             /** \brief Approaches the graph from a given vertex */
-            void approachGraph( Vertex v );
+            int approachGraph( Vertex v );
 
             /** \brief Finds the representative of the input state, st  */
             Vertex findGraphRepresentative(base::State *st);

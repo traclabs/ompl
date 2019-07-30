@@ -167,10 +167,10 @@ void ompl::tools::Thunder::setup(void)
             experienceDB_->load(filePath_); // load from file
             if (critical_points_.size()>0)
             {
-                auto result = experienceDB_->addCriticalPoints(critical_points_);
-                if (result)
-                    OMPL_INFORM("Succesfully added %d critical points in FILLOUT seconds",
-                            critical_points_.size());
+                auto n = experienceDB_->addCriticalPoints(critical_points_);
+                if (n>0)
+                    OMPL_INFORM("Succesfully added %d/%d critical points in ? seconds",
+                            n, critical_points_.size());
                  else
                     OMPL_ERROR("Failed to add %d critical points ", critical_points_.size());
             }

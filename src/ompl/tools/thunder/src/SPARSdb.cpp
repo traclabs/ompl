@@ -938,6 +938,19 @@ bool ompl::geometric::SPARSdb::checkStartGoalConnection(ompl::geometric::PathGeo
     return !error; // return true if it inserted correctly
 }
 
+bool ompl::geometric::SPARSdb::addStateToRoadmapForce(base::State *newState)
+{
+    //create  the new vertex
+    base::State *qNew = si_->cloneState(newState);
+    Vertex m = boost::add_vertex(g_);
+    stateProperty_[m] = qNew;
+
+    auto n  =  approachGraph(m);
+    OMPL_INFORM("%d new neighbors were added to the graph!");
+
+    return n> 0;
+
+}
 bool ompl::geometric::SPARSdb::addStateToRoadmap(const base::PlannerTerminationCondition &ptc, base::State *newState)
 {
     bool stateAdded = false;
@@ -1289,6 +1302,7 @@ void ompl::geometric::SPARSdb::findGraphNeighbors(base::State *st, std::vector<V
             visibleNeighborhood.push_back(graphNeighborhood[i]);
 }
 
+
 bool ompl::geometric::SPARSdb::findGraphNeighbors(const base::State *state, std::vector<Vertex> &graphNeighborhood)
 {
     base::State* stateCopy = si_->cloneState(state);
@@ -1327,18 +1341,24 @@ bool ompl::geometric::SPARSdb::findGraphNeighbors(const base::State *state, std:
     return true;
 }
 
-void ompl::geometric::SPARSdb::approachGraph( Vertex v )
+int ompl::geometric::SPARSdb::approachGraph(Vertex v)
 {
-    std::vector< Vertex > hold;
-    nn_->nearestR( v, sparseDelta_, hold );
+  std::vector<Vertex> hold;
+  nn_->nearestK(v,si_->getStateDimension() , hold);//HACK get as many neighbors as the state's dimention.
 
-    std::vector< Vertex > neigh;
-    for (std::size_t i = 0; i < hold.size(); ++i)
-        if (si_->checkMotion( stateProperty_[v], stateProperty_[hold[i]]))
-            neigh.push_back( hold[i] );
+  //Number of succesfull additions. 
+  int n = 0;
+  for (std::size_t i = 0; i < hold.size(); ++i)
+      if (si_->checkMotion(stateProperty_[v], stateProperty_[hold[i]]))
+      {
+            Edge e = (boost::add_edge(v, hold[i], g_)).first;
+            // Add associated properties to the edge
+            edgeWeightProperty_[e] = distanceFunction(v,hold[i] );  
+            edgeCollisionStateProperty_[e] = FREE;
+            n++;
+      }
 
-    foreach (Vertex vp, neigh)
-        connectGuards(v, vp);
+  return n;
 }
 
 ompl::geometric::SPARSdb::Vertex ompl::geometric::SPARSdb::findGraphRepresentative(base::State *st)
