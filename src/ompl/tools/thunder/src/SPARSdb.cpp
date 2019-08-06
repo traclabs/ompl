@@ -1352,12 +1352,12 @@ int ompl::geometric::SPARSdb::approachGraph(Vertex v)
   //Number of succesfull additions. 
   int n = 0;
   for (std::size_t i = 0; i < hold.size(); ++i)
-      if (si_->checkMotion(stateProperty_[v], stateProperty_[hold[i]]))
+      if (true || si_->checkMotion(stateProperty_[v], stateProperty_[hold[i]]))
       {
             Edge e = (boost::add_edge(v, hold[i], g_)).first;
             // Add associated properties to the edge
             edgeWeightProperty_[e] = distanceFunction(v,hold[i] );  
-            edgeCollisionStateProperty_[e] = FREE;
+            edgeCollisionStateProperty_[e] = NOT_CHECKED;
             n++;
       }
 
