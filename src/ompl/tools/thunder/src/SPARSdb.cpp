@@ -1347,25 +1347,37 @@ int ompl::geometric::SPARSdb::approachGraph(Vertex v)
     OMPL_INFORM("########################################################");
     OMPL_INFORM("########################################################");
     OMPL_INFORM("Num connected components %d", getNumConnectedComponents());
+
+
+    // std::vector<ComponentGraph> cg_list = connectedComponentsSubgraphs(g_);
+    // OMPL_INFORM("Num component graphs %d", cg_list.size());
+
+    // int cg = 0;
+    // for (auto const& component : cg_list(g_))
+    // {
+    //     // OMPL_INFORM(" component [ %d ] size: %d", cg, edges(component).size());
+    //     cg++;
+    // }
+
     OMPL_INFORM("########################################################");
     OMPL_INFORM("########################################################");
 
 
     std::vector< Vertex > hold;
-    nn_->nearestK(v, 3, hold);
+    // nn_->nearestK(v, 3, hold);
 
     int n = 0;
-    for (std::size_t i = 0; i < hold.size(); ++i)
-    {
-       if (true || si_->checkMotion(stateProperty_[v], stateProperty_[hold[i]]))
-       {
-            Edge e = (boost::add_edge(v, hold[i], g_)).first;
-            // Add associated properties to the edge
-            edgeWeightProperty_[e] = distanceFunction(v,hold[i] );  
-            edgeCollisionStateProperty_[e] = NOT_CHECKED;
-            n++;
-       }
-    }
+    // for (std::size_t i = 0; i < hold.size(); ++i)
+    // {
+    //    if (true || si_->checkMotion(stateProperty_[v], stateProperty_[hold[i]]))
+    //    {
+    //         Edge e = (boost::add_edge(v, hold[i], g_)).first;
+    //         // Add associated properties to the edge
+    //         edgeWeightProperty_[e] = distanceFunction(v,hold[i] );  
+    //         edgeCollisionStateProperty_[e] = NOT_CHECKED;
+    //         n++;
+    //    }
+    // }
     return n;
 
 

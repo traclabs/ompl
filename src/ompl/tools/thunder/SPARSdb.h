@@ -53,6 +53,8 @@
 #include <boost/graph/connected_components.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/pending/disjoint_sets.hpp>
+#include <boost/make_shared.hpp>
+#include <boost/range/iterator_range.hpp>
 #include <functional>
 #include <thread>
 #include <iostream>
@@ -300,11 +302,17 @@ namespace ompl
                 EdgeProperties
             > Graph;
 
+
             /** \brief Vertex in Graph */
             typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
             /** \brief Edge in Graph */
             typedef boost::graph_traits<Graph>::edge_descriptor   Edge;
+
+
+            // \brief connected commnept util
+            typedef boost::shared_ptr<std::vector<unsigned long>> VertexComponentMap;
+
 
             ////////////////////////////////////////////////////////////////////////////////////////
             // Typedefs for property maps
@@ -599,6 +607,31 @@ namespace ompl
 
             /** \brief Clear all past edge state information about in collision or not */
             void clearEdgeCollisionStates();
+
+
+            typedef boost::filtered_graph<Graph, std::function<bool(Graph::edge_descriptor)>, std::function<bool(Graph::vertex_descriptor)> > ComponentGraph;
+
+            // std::vector<ComponentGraph> connectedComponentsSubgraphs(Graph const&g)
+            // {
+            //     VertexComponentMap mapping = boost::make_shared<std::vector<unsigned long>>(num_vertices(g));
+            //     size_t num = boost::connected_components(g, mapping->data());
+
+            //     std::vector<ComponentGraph> component_graphs;
+
+            //     num = num;
+            //     // for (size_t i = 0; i < num; i++)
+            //     //     component_graphs.emplace_back(g,
+            //     //         [mapping,i,&g](Graph::edge_descriptor e) {
+            //     //             return mapping->at(source(e,g))==i
+            //     //                 || mapping->at(target(e,g))==i;
+            //     //         }, 
+            //     //         [mapping,i](Graph::vertex_descriptor v) {
+            //     //             return mapping->at(v)==i;
+            //     //         });
+
+            //     return component_graphs;
+            // }
+
 
         protected:
 
