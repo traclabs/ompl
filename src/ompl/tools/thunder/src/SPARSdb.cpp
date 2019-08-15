@@ -947,7 +947,7 @@ int ompl::geometric::SPARSdb::addStateToRoadmapForce(base::State *newState)
     stateProperty_[m] = qNew;
 
     auto n  =  approachGraph(m);
-    OMPL_INFORM("%d new neighbors were added to the graph!", n);
+    // OMPL_INFORM("%d new neighbors were added to the graph!", n);
 
     return n;
 
@@ -1344,24 +1344,92 @@ bool ompl::geometric::SPARSdb::findGraphNeighbors(const base::State *state, std:
 
 int ompl::geometric::SPARSdb::approachGraph(Vertex v)
 {
-  std::vector<Vertex> hold;
-  //nn_->nearestK(v,si_->getStateDimension() , hold);//HACK get as many neighbors as the state's dimention.
+    OMPL_INFORM("########################################################");
+    OMPL_INFORM("########################################################");
+    OMPL_INFORM("Num connected components %d", getNumConnectedComponents());
+    OMPL_INFORM("########################################################");
+    OMPL_INFORM("########################################################");
 
 
-  nn_->nearestK(v,8 , hold);//HACK get as many neighbors as the state's dimention.
-  //Number of succesfull additions. 
-  int n = 0;
-  for (std::size_t i = 0; i < hold.size(); ++i)
-      if (true || si_->checkMotion(stateProperty_[v], stateProperty_[hold[i]]))
-      {
+    std::vector< Vertex > hold;
+    nn_->nearestK(v, 3, hold);
+
+    int n = 0;
+    for (std::size_t i = 0; i < hold.size(); ++i)
+    {
+       if (true || si_->checkMotion(stateProperty_[v], stateProperty_[hold[i]]))
+       {
             Edge e = (boost::add_edge(v, hold[i], g_)).first;
             // Add associated properties to the edge
             edgeWeightProperty_[e] = distanceFunction(v,hold[i] );  
             edgeCollisionStateProperty_[e] = NOT_CHECKED;
             n++;
-      }
+       }
+    }
+    return n;
 
-  return n;
+
+
+    // // STEVE MODS
+    // std::vector< Vertex > hold;
+    // nn_->nearestK(v, 3, hold);
+
+    // int n = 0;
+    // for (std::size_t i = 0; i < hold.size(); ++i)
+    // {
+    //    if (true || si_->checkMotion(stateProperty_[v], stateProperty_[hold[i]]))
+    //    {
+    //         Edge e = (boost::add_edge(v, hold[i], g_)).first;
+    //         // Add associated properties to the edge
+    //         edgeWeightProperty_[e] = distanceFunction(v,hold[i] );  
+    //         edgeCollisionStateProperty_[e] = NOT_CHECKED;
+    //         n++;
+    //    }
+    // }
+    // return n;
+
+
+    // // ORIGNAL
+    // std::vector< Vertex > hold;
+    // nn_->nearestR( v, sparseDelta_, hold );
+
+    // std::vector< Vertex > neigh;
+    // int n = 0;
+    // for (std::size_t i = 0; i < hold.size(); ++i)
+    // {
+    //     if (si_->checkMotion( stateProperty_[v], stateProperty_[hold[i]]))
+    //     {
+    //         neigh.push_back( hold[i] );
+    //         n++;
+    //     }
+    // }
+
+    // foreach (Vertex vp, neigh)
+    //     connectGuards(v, vp);
+
+    // return n;
+
+
+    // // CONSTANTINOS    
+    // std::vector<Vertex> hold;
+    // //nn_->nearestK(v,si_->getStateDimension() , hold);//HACK get as many neighbors as the state's dimention.
+
+
+    // nn_->nearestK(v,8 , hold);//HACK get as many neighbors as the state's dimention.
+    // //Number of succesfull additions. 
+    // int n = 0;
+    // for (std::size_t i = 0; i < hold.size(); ++i)
+    //   if (true || si_->checkMotion(stateProperty_[v], stateProperty_[hold[i]]))
+    //   {
+    //         Edge e = (boost::add_edge(v, hold[i], g_)).first;
+    //         // Add associated properties to the edge
+    //         edgeWeightProperty_[e] = distanceFunction(v,hold[i] );  
+    //         edgeCollisionStateProperty_[e] = NOT_CHECKED;
+    //         n++;
+    //   }
+
+    return n;
+
 }
 
 ompl::geometric::SPARSdb::Vertex ompl::geometric::SPARSdb::findGraphRepresentative(base::State *st)
