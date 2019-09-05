@@ -181,6 +181,35 @@ void ompl::tools::Thunder::setup(void)
     }
 }
 
+
+void ompl::tools::Thunder::resetDB(void)
+{
+    OMPL_INFORM("Calling setup() for SPARSdb");
+
+    // Load SPARSdb
+    experienceDB_->getSPARSdb().reset(new ompl::geometric::SPARSdb(si_));
+    experienceDB_->getSPARSdb()->setProblemDefinition(pdef_);
+    experienceDB_->getSPARSdb()->setup();
+
+    experienceDB_->getSPARSdb()->setStretchFactor(1.2);
+    experienceDB_->getSPARSdb()->setSparseDeltaFraction(0.05); // vertex visibility range  = maximum_extent * this_fraction
+    //experienceDB_->getSPARSdb()->setDenseDeltaFraction(0.001);
+
+    experienceDB_->getSPARSdb()->printDebug();
+
+    experienceDB_->load(filePath_); // load from file
+    if (critical_points_.size()>0)
+    {
+        auto n = experienceDB_->addCriticalPoints(critical_points_);
+        if (n>0)
+            OMPL_INFORM("Succesfully added %d/%d critical points in ? seconds",
+                    n, critical_points_.size());
+         else
+            OMPL_ERROR("Failed to add %d critical points ", critical_points_.size());
+    }
+}
+
+
 void ompl::tools::Thunder::clear(void)
 {
     if (planner_)

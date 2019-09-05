@@ -158,6 +158,8 @@ namespace ompl
                 for planning. The solve() method will call this function automatically. */
             virtual void setup(void);
 
+            void resetDB(void);
+
             /** \brief Get a vector of all the planning data in the database */
             void getAllPlannerDatas(std::vector<ompl::base::PlannerDataPtr> &plannerDatas) const;
 
